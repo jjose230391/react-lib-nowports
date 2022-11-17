@@ -1,8 +1,8 @@
 import React from 'react'
 
 
-const ExampleV1 = ({text}) => {
+const Chat = ({text}) => {
     return <h1>{text}</h1>
 }
 
-export default ExampleV1
+export default Chat
