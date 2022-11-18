@@ -1,6 +1,6 @@
 # react-lib-nowports
 
-> This package global for nowports
+> Made with create-react-library
 
 [![NPM](https://img.shields.io/npm/v/react-lib-nowports.svg)](https://www.npmjs.com/package/react-lib-nowports) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 

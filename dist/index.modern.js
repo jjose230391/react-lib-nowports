@@ -1,13 +1,18 @@
 import React from 'react';
 
-var styles = {"test":"_3ybTi"};
-
-var ExampleComponent = function ExampleComponent(_ref) {
-  var text = _ref.text;
-  return /*#__PURE__*/React.createElement("div", {
-    className: styles.test
-  }, "Example Component: ", text);
+const ChatContainer = ({
+  text
+}) => {
+  return /*#__PURE__*/React.createElement("h1", null, text);
 };
 
-export { ExampleComponent };
+const Chat = ({
+  text
+}) => {
+  return /*#__PURE__*/React.createElement(ChatContainer, {
+    text: text
+  });
+};
+
+export { Chat };
 //# sourceMappingURL=index.modern.js.map

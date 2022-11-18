@@ -2,14 +2,17 @@ function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'defau
 
 var React = _interopDefault(require('react'));
 
-var styles = {"test":"_3ybTi"};
-
-var ExampleComponent = function ExampleComponent(_ref) {
+var ChatContainer = function ChatContainer(_ref) {
   var text = _ref.text;
-  return /*#__PURE__*/React.createElement("div", {
-    className: styles.test
-  }, "Example Component: ", text);
+  return /*#__PURE__*/React.createElement("h1", null, text);
 };
 
-exports.ExampleComponent = ExampleComponent;
+var Chat = function Chat(_ref) {
+  var text = _ref.text;
+  return /*#__PURE__*/React.createElement(ChatContainer, {
+    text: text
+  });
+};
+
+exports.Chat = Chat;
 //# sourceMappingURL=index.js.map

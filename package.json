@@ -1,7 +1,7 @@
 {
   "name": "react-lib-nowports",
   "version": "1.0.0",
-  "description": "This package global for nowports",
+  "description": "Made with create-react-library",
   "author": "nowports",
   "license": "MIT",
   "repository": "nowports/react-lib-nowports",
@@ -13,7 +13,7 @@
   },
   "scripts": {
     "build": "microbundle-crl --no-compress --format modern,cjs",
-    "start": "microbundle-crl watch --no-compress --format modern,cjs",
+    "start": "cd example && npm start && microbundle-crl watch --no-compress --format modern,cjs",
     "prepare": "run-s build",
     "test": "run-s test:unit test:lint test:build",
     "test:build": "run-s build",
