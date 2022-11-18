@@ -4,7 +4,7 @@ import { Chat } from 'react-lib-nowports'
 const App = () => {
   return (
       <>
-        <Chat text="Chat para todos" />
+        <Chat text="Chat para todosd" />
       </>
   )
 }
