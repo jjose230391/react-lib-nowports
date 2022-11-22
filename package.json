@@ -13,7 +13,10 @@
   },
   "scripts": {
     "build": "microbundle-crl --no-compress --format modern,cjs",
-    "start": "microbundle-crl watch --no-compress --format modern,cjs && cd example && npm start",
+    "start": "microbundle-crl watch --no-compress --format modern,cjs",
+    "start-server": "cd example && npm start -D",
+    "rebuild": "microbundle-crl --no-compress --format modern,cjs",
+    "prepinstall": "npm i && cd example && npm i -D",
     "prepare": "run-s build",
     "test": "run-s test:unit test:lint test:build",
     "test:build": "run-s build",
@@ -26,7 +29,9 @@
   "dependencies": {
     "styled-components": "^5.2.0",
     "socket.io-client": "^2.3.0",
-    "prop-types": "^15.6.1"
+    "prop-types": "^15.6.1",
+    "axios": "^0.19.2",
+    "rotterdam-v2": "git+ssh://git@github.com/nowports/rotterdam#f9de503"
   },
   "peerDependencies": {
     "react": "^16.0.0"
@@ -52,7 +57,8 @@
     "prettier": "^2.0.4",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "react-scripts": "^3.4.1"
+    "react-scripts": "^3.4.1",
+    "@babel/plugin-syntax-object-rest-spread": "^7.8.3"
   },
   "files": [
     "dist"
