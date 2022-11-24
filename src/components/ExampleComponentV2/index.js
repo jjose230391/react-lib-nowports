@@ -3,11 +3,14 @@ import PropTypes from "prop-types";
 import { RotInput } from "rotterdam-v2";
 import getChats from "../../data/chat";
 import { MainLayoutContext } from "../../context/ChatProvider";
+import Alert from "./components/Alert/Alert";
+
+let time = 0;
 
 class ExampleV2 extends Component {
   constructor(props) {
     super(props);
-    this.state = { text: "" };
+    this.state = { text: "", message: "", onToast: false };
   }
 
   componentDidMount() {
@@ -19,19 +22,25 @@ class ExampleV2 extends Component {
 
     //
     socket.on("NewMessage", (data) => {
+      console.log('NUEVO MENSAJE', data)
       onSubmit(data);
+
+      this.setState({onToast: true})
+
+      if (time) clearTimeout(time);
+      time = setTimeout(() => {
+        this.setState({onToast: false})
+      }, 3000);
+      this.setState({message: data.response.payload})
     });
   }
 
   verifyConnectionSocket = () => {
-    const {
-      config: { token },
-    } = this.props;
     const { socket, onRegisterUserIOToken } = this.context;
     socket.on("connect", () => {
-      onRegisterUserIOToken(token);
+      onRegisterUserIOToken();
       if (socket.connected) {
-        console.log("socket conectado");
+        console.log("socket conectado", socket.id);
       } else {
         console.log("socket no conectado");
       }
@@ -50,14 +59,23 @@ class ExampleV2 extends Component {
   };
 
   handleText = (e) => {
-    const { onEmitNewMessage } = this.context;
+    const { onEmitNewMessage, config } = this.context;
+    const { token } = config;
     this.setState({ text: e.target.value });
-    onEmitNewMessage({ message: e.target.value });
+    const data = {
+      auth:{
+        token,
+        idChat: 1217,
+      },
+      type: "Text",
+      payload: e.target.value
+    }
+    onEmitNewMessage(data);
   };
 
   render() {
     const { children } = this.props;
-    const { text } = this.state;
+    const { text, message, onToast } = this.state;
     return (
       <>
         <h2>{children}</h2>
@@ -69,6 +87,7 @@ class ExampleV2 extends Component {
             this.handleText(e);
           }}
         />
+        <Alert isVisible={onToast}>{message}</Alert>
       </>
     );
   }

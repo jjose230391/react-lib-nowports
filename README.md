@@ -2,6 +2,12 @@
 
 > Library global for Nowports Inc.
 
+## Node
+
+```bash
+use node>=12
+```
+
 ## Install
 
 ```bash

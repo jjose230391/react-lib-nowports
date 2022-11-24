@@ -1,4 +1,4 @@
-import React, {createContext} from "react";
+import React, { createContext, useEffect } from "react";
 import PropTypes from "prop-types";
 import openSocket from "socket.io-client";
 
@@ -14,25 +14,30 @@ const ChatProvider = (props) => {
     token,
   } = config;
 
-    const socket = openSocket(connectionMain, {
-        transports: ["websocket"],
-        path,
-        withCredentials: true,
-        transportOptions: {
-            polling: {
-                extraHeaders: {
-                    "X-ACCESS": xAccess,
-                },
-            },
+  const socket = openSocket(connectionMain, {
+    transports: ["websocket"],
+    path,
+    withCredentials: true,
+    transportOptions: {
+      polling: {
+        extraHeaders: {
+          "X-ACCESS": xAccess,
         },
-    });
+      },
+    },
+  });
+  useEffect(() => {
+    return () => {
+      socket.off("newMessage", null);
+    };
+  }, []);
 
   const registerUserIOToken = () => {
-      socket.emit("registerUserIOToken", { token, id: socket.id });
+    socket.emit("registerUserIOToken", { token, id: socket.id });
   };
 
   const emitNewMessage = (request) => {
-      socket.emit("NewMessage", request);
+    socket.emit("newMessage", request);
   };
 
   return (
