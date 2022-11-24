@@ -92,21 +92,9 @@ class ExampleV2 extends Component {
 
     return (
       <div style={{ background: "#FAFAFF", height: "100vh" }}>
-        {conversationList.length > 0 &&
-          conversationList.map(({ title }) => {
-            return <h2 key={title}>{title}</h2>;
-          })}
         {children}
-        <RotInput
-          placeholder="Hola mundo"
-          label="Input"
-          value={text}
-          onChange={(e) => {
-            this.handleText(e);
-          }}
-        />
         <Alert isVisible={onToast}>{message}</Alert>
-        <ChatMainCointainer conversationList={conversationList} />
+        <ChatMainCointainer conversationList={conversationList} handleText={this.handleText} />
       </div>
     );
   }

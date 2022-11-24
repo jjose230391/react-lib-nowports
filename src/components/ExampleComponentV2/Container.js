@@ -58,7 +58,7 @@ class ChatMainCointainer extends Component {
   };
 
   render() {
-    const { conversationList } = this.props;
+    const { conversationList, handleText } = this.props;
     const { messages, participants } = this.state;
     const { config } = this.context;
 
@@ -134,7 +134,7 @@ class ChatMainCointainer extends Component {
               name="text-area-name"
               key="text-area-key"
               placeholder="Escribe un mensaje"
-              onChange={() => {}}
+              onChange={(event) => handleText(event)}
             />
           </RotCard>
         </Col>
