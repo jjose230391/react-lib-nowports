@@ -4,7 +4,7 @@ import { Chat } from 'react-lib-nowports'
 const config = {
   language: 'es',
   token: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZFVzZXIiOjMwOSwiZW1haWwiOiJ1c2VydGVzdEBtYWlsLmNvbSIsIm5hbWUiOiJKYXptaW4gUmR6IiwicGhvbmVOdW1iZXIiOiI4MTI1MTU2MDQ3Iiwicm9sZSI6InVzZXIiLCJhcmVhIjoiZ2VuZXJhbCIsImV4cCI6MTY3NzI0ODI1ODU3MCwibGFuZ3VhZ2UiOiJlcyIsInNlc3Npb24iOiJiRHgxMEpoaFQwOEJHRnM1VUhscEpQYnNGZDdPd2xhM3hzcjkifQ.cMm-5KBKARr7SDCaFbOpB4EiyNRt9PlJQD9DGNhhByk',
-  userId: 1,
+  userId: 309,
   businessId:12,
   options: {
     isLite: {
@@ -12,13 +12,13 @@ const config = {
     },
     connectionsBySection: {
       chatsList: {
-        getConversation: '/chat',
+        getConversations: 'http://localhost:3000/chat',
         getUpdates: 'endpoint',
         getContacts: 'chat/participants/candidates?idBusiness=00',
         socketEventToUpdates: 'shipmentUpdate'
       },
       chatDetails:{
-        getMessages: 'chat/payload',
+        getMessages: 'http://localhost:3000/chat/payload',
         postMessage: 'participant/lastRead',
         sendFiles: '',
         deleteChat: '',
@@ -29,7 +29,7 @@ const config = {
       },
     },
     socket: {
-      connectionMain: 'ws://localhost:3000',
+      connectionSocketMain: 'ws://localhost:3000',
       path: '/socket',
       xAccess: 'wp5RctyVL4HRRr1Tx09UAvBWLixNz5ze'
     }

@@ -7,7 +7,7 @@ import {
   RotCard,
   RotChatItem,
   RotMessage,
-  RotTextArea,
+  RotInput,
 } from "rotterdam-v2";
 
 import { MainLayoutContext } from "../../context/ChatProvider";
@@ -19,8 +19,18 @@ class ChatMainCointainer extends Component {
     super(props);
     this.state = {
       messages: [],
-      participants: []
+      participants: [],
+      chatId: 0,
+      text: "",
     };
+  }
+
+  componentDidMount() {
+    const { socket } = this.context;
+    socket.on("NewMessage", () => {
+      const { chatId } = this.state;
+      this.fetchConversation(chatId);
+    });
   }
 
   onChangeState = (key, value) => {
@@ -42,7 +52,7 @@ class ChatMainCointainer extends Component {
         token,
         URL: getMessages,
         chatId,
-        socket
+        socket,
       });
 
       if (status === "success") {
@@ -53,15 +63,37 @@ class ChatMainCointainer extends Component {
       }
       return data;
     } catch (error) {
-      return(error);
+      return error;
     }
   };
 
-  render() {
-    const { conversationList, handleText } = this.props;
-    const { messages, participants } = this.state;
-    const { config } = this.context;
+  submitMessage = () => {
+    const { onEmitNewMessage, config } = this.context;
+    const { text } = this.state;
+    const { token } = config;
+    const data = {
+      auth: {
+        token,
+        // idChat: 1217,
+        idChat: 1196,
+      },
+      type: "Text",
+      payload: text,
+    };
+    this.scrollToBottom();
+    this.setState({ text: "" });
+    onEmitNewMessage(data);
+  };
 
+  scrollToBottom = () => {
+    const element = document.getElementById("message-body");
+    element.scrollTop = element.scrollHeight;
+  };
+
+  render() {
+    const { conversationList } = this.props;
+    const { messages, participants, text } = this.state;
+    const { config } = this.context;
     return (
       <Row gutter={4} justify="center">
         <Col span={7}>
@@ -81,7 +113,7 @@ class ChatMainCointainer extends Component {
                   return (
                     <div
                       key={idChat}
-                      role='presentation'
+                      role="presentation"
                       onClick={() => this.onChangeState("chatId", idChat)}
                     >
                       <RotChatItem
@@ -113,6 +145,7 @@ class ChatMainCointainer extends Component {
             dataTour="rot-card"
           >
             <div
+              id="message-body"
               style={{ height: "525px", overflow: "auto", marginBottom: 20 }}
             >
               {messages.length > 0
@@ -128,14 +161,18 @@ class ChatMainCointainer extends Component {
                   ))
                 : null}
             </div>
-
-            <RotTextArea
-              id="text-area-id"
-              name="text-area-name"
+            <RotInput
+              id="first-name-id"
+              name="first-name"
               key="text-area-key"
-              placeholder="Escribe un mensaje"
-              onChange={(event) => handleText(event)}
+              label="Escribir aqui..."
+              placeholder="Escribir aqui..."
+              onChange={(event) => this.setState({ text: event.target.value })}
+              value={text}
             />
+            <button type="submit" onClick={() => this.submitMessage()}>
+              Enviar
+            </button>
           </RotCard>
         </Col>
         <Col span={5}>
@@ -148,10 +185,8 @@ class ChatMainCointainer extends Component {
             dataTour="rot-card"
           >
             <div className="tesxtp">
-            {participants.length > 0
-                ? participants.map(({ name }) => (
-                    <div key={name}>{name}</div>
-                  ))
+              {participants.length > 0
+                ? participants.map(({ name }) => <div key={name}>{name}</div>)
                 : null}
             </div>
           </RotCard>
@@ -163,13 +198,13 @@ class ChatMainCointainer extends Component {
 
 ChatMainCointainer.contextType = MainLayoutContext;
 ChatMainCointainer.defaultProps = {
-    conversationList: [],
+  conversationList: [],
 };
 
 ChatMainCointainer.propTypes = {
-    conversationList: PropTypes.arrayOf(),
+  conversationList: PropTypes.arrayOf(),
 };
 
-
+ChatMainCointainer.contextType = MainLayoutContext;
 
 export default ChatMainCointainer;

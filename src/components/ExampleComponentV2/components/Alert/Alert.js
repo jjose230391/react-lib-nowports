@@ -13,8 +13,10 @@ const Alert = (props) =>{
 export default Alert
 
 Alert.defaultProps = {
-    children: null
+    children: null,
+    isVisible: false
 }
 Alert.propTypes = {
-    children: PropTypes.node
+    children: PropTypes.node,
+    isVisible: PropTypes.bool
 }

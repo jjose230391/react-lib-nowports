@@ -1,14 +1,13 @@
 /* eslint-disable no-console */
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { RotInput } from "rotterdam-v2";
 import { getChats } from "../../data/chat";
 import { MainLayoutContext } from "../../context/ChatProvider";
 import Alert from "./components/Alert/Alert";
 
-let time = 0;
-
 import ChatMainCointainer from "./Container";
+
+let time = 0;
 
 class ExampleV2 extends Component {
   constructor(props) {
@@ -27,7 +26,6 @@ class ExampleV2 extends Component {
     this.fetchChats();
     this.verifyConnectionSocket();
     socket.on("NewMessage", (data) => {
-      console.log('NUEVO MENSAJE', data)
       onSubmit(data);
 
       this.setState({onToast: true})
@@ -71,30 +69,15 @@ class ExampleV2 extends Component {
     }
   };
 
-  handleText = (e) => {
-    const { onEmitNewMessage, config } = this.context;
-    const { token } = config;
-    this.setState({ text: e.target.value });
-    const data = {
-      auth:{
-        token,
-        idChat: 1217,
-      },
-      type: "Text",
-      payload: e.target.value
-    }
-    onEmitNewMessage(data);
-  };
-
   render() {
     const { children } = this.props;
-    const { text, message, onToast, conversationList } = this.state;
+    const { message, onToast, conversationList } = this.state;
 
     return (
       <div style={{ background: "#FAFAFF", height: "100vh" }}>
         {children}
         <Alert isVisible={onToast}>{message}</Alert>
-        <ChatMainCointainer conversationList={conversationList} handleText={this.handleText} />
+        <ChatMainCointainer conversationList={conversationList} />
       </div>
     );
   }
