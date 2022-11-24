@@ -1,18 +1,32 @@
 import axios from "axios";
 
-const token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZFVzZXIiOjExMjAsImVtYWlsIjoiaXZhbi5kaWF6QG5vd3BvcnRzLmNvbSIsIm5hbWUiOiJTYW5nIEppayBMZWUiLCJwaG9uZU51bWJlciI6IjgzNDEzMDc1MDkiLCJyb2xlIjoidXNlciIsImFyZWEiOiJnZW5lcmFsIiwiZXhwIjoxNjc0MjU0MTk2OTIyLCJsYW5ndWFnZSI6ImVzIiwic2Vzc2lvbiI6IjJwZG9VN1Mzb3pYVjJCSURuWmtKTklUWlcyTHpaa0NUczFhbSJ9.8fGKM187p0FesvVazgH1CGP1_P4xILAzutowAXRhOGM';
-
-const getChats = () => {
+const getChats = async ({ token, URL }) => {
   try {
-    const response = axios.get("http://localhost:3000/chat", {
-        headers: {
-            'Authorization': token,
-        }
+    const { data } = await axios.get(URL, {
+      headers: {
+        Authorization: token,
+      },
     });
-    return response;
+    return data;
   } catch (error) {
-    console.log(error)
+    return error;
   }
 };
 
-export default getChats;
+const getConversation = async ({ token, URL, chatId, socket }) => {
+  try {
+    const { data } = await axios.get(URL, {
+      headers: {
+        Authorization: token,
+        'X-ACCESS': socket.xAccess,
+        'x-chat-id': chatId
+      },
+    });
+    return data
+  } catch (error) {
+    return error;
+  }
+
+};
+
+export { getChats, getConversation }

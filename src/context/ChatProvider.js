@@ -9,12 +9,12 @@ const ChatProvider = (props) => {
 
   const {
     options: {
-      socket: { connectionMain, path, xAccess },
+      socket: { connectionSocketMain, path, xAccess },
     },
     token,
   } = config;
 
-  const socket = openSocket(connectionMain, {
+  const socket = openSocket(connectionSocketMain, {
     transports: ["websocket"],
     path,
     withCredentials: true,
@@ -66,7 +66,7 @@ ChatProvider.propTypes = {
   config: PropTypes.shape({
     options: PropTypes.shape({
       socket: PropTypes.shape({
-        connectionMain: PropTypes.string,
+        connectionSocketMain: PropTypes.string,
         path: PropTypes.string,
         xAccess: PropTypes.string,
       }),

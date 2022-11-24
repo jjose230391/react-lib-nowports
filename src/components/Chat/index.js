@@ -1,9 +1,8 @@
+import React from "react";
+import styled, { css } from "styled-components";
+import PropTypes from "prop-types";
 
-import React from 'react';
-import styled, { css } from 'styled-components';
-import PropTypes from 'prop-types';
-
-import ExampleV2 from '../ExampleComponentV2';
+import ExampleV2 from "../ExampleComponentV2";
 import ChatProvider from "../../context/ChatProvider";
 
 const ChatWrapper = styled(ExampleV2)`
@@ -12,26 +11,26 @@ const ChatWrapper = styled(ExampleV2)`
   `}
 `;
 const ChatContainer = (props) => {
-    const { text, onSubmit, config } = props;
+  const { text, onSubmit, config } = props;
 
-    return (
-        <ChatProvider config={config}>
-            <ChatWrapper color='blue' onSubmit={(s)=>onSubmit(s)}>{text}</ChatWrapper>
-        </ChatProvider>
-        )
-}
+  return (
+    <ChatProvider config={config}>
+      <ChatWrapper color="blue" onSubmit={(s) => onSubmit(s)}>
+        {text}
+      </ChatWrapper>
+    </ChatProvider>
+  );
+};
 
-export default ChatContainer
-
-
+export default ChatContainer;
 
 ChatContainer.defaultProps = {
-    text: '',
-    onSubmit: () => {},
-    config: {}
+  text: "",
+  onSubmit: () => {},
+  config: {},
 };
 ChatContainer.propTypes = {
-    text: PropTypes.node,
-    onSubmit: PropTypes.func,
-    config: PropTypes.shape({})
+  text: PropTypes.node,
+  onSubmit: PropTypes.func,
+  config: PropTypes.shape({}),
 };

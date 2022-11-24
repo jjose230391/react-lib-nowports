@@ -1,26 +1,31 @@
-import React, { Component, Fragment } from "react";
+/* eslint-disable no-console */
+import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { RotInput } from "rotterdam-v2";
-import getChats from "../../data/chat";
+import { getChats } from "../../data/chat";
 import { MainLayoutContext } from "../../context/ChatProvider";
 import Alert from "./components/Alert/Alert";
 
 let time = 0;
 
+import ChatMainCointainer from "./Container";
+
 class ExampleV2 extends Component {
   constructor(props) {
     super(props);
-    this.state = { text: "", message: "", onToast: false };
+    this.state = {
+      text: "",
+      conversationList: [],
+      onToast: false,
+    };
   }
 
   componentDidMount() {
     const { onSubmit } = this.props;
     const { socket } = this.context;
 
+    this.fetchChats();
     this.verifyConnectionSocket();
-    // this.fetchChats();
-
-    //
     socket.on("NewMessage", (data) => {
       console.log('NUEVO MENSAJE', data)
       onSubmit(data);
@@ -48,13 +53,21 @@ class ExampleV2 extends Component {
   };
 
   fetchChats = async () => {
-    // const { onChatLoaded } = this.props;
-
+    const { config } = this.context;
+    const { token, options } = config || {};
+    const { connectionsBySection } = options || {};
+    const { chatsList } = connectionsBySection || {};
+    const { getConversations } = chatsList || {};
     try {
-      const response = await getChats();
-      console.log(response, "response");
+      const { data, status } = await getChats({ token, URL: getConversations });
+      if (status === "success") {
+        this.setState({
+          conversationList: data.direct,
+        });
+      }
+      return data;
     } catch (error) {
-      console.log(error);
+      return error;
     }
   };
 
@@ -75,10 +88,15 @@ class ExampleV2 extends Component {
 
   render() {
     const { children } = this.props;
-    const { text, message, onToast } = this.state;
+    const { text, message, onToast, conversationList } = this.state;
+
     return (
-      <>
-        <h2>{children}</h2>
+      <div style={{ background: "#FAFAFF", height: "100vh" }}>
+        {conversationList.length > 0 &&
+          conversationList.map(({ title }) => {
+            return <h2 key={title}>{title}</h2>;
+          })}
+        {children}
         <RotInput
           placeholder="Hola mundo"
           label="Input"
@@ -88,14 +106,12 @@ class ExampleV2 extends Component {
           }}
         />
         <Alert isVisible={onToast}>{message}</Alert>
-      </>
+        <ChatMainCointainer conversationList={conversationList} />
+      </div>
     );
   }
 }
 
-// const ExampleV2 = ({text}) => {
-//     return <h2>{text}</h2>
-// }
 ExampleV2.defaultProps = {
   children: null,
   config: { token: "" },
